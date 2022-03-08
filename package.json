@@ -1,0 +1,15 @@
+{
+  "name": "dscw3-main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "DSCW3App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv": "^6.0.5",
+    "express": "^4.17.3"
+  }
+}

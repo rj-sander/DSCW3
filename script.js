@@ -1,4 +1,4 @@
-
+// Defines all necessary HTML elements in QuizApp file as javascript elements according to their id tags
 const startButton = document.getElementById('startButton')
 const nextButton = document.getElementById('nextButton')
 const contextContainer = document.getElementById('contextContainer')
@@ -9,44 +9,48 @@ const results = document.getElementById('results')
 const resultsContainer = document.getElementById('resultsContainer')
 const answerButtonsElement = document.getElementById('answerButtons')
 const rightWrong = document.getElementById("rightWrong")
+// Creates the variables needed to created a shuffled question deck
 let shuffledQuestions, currentQuestionIndex
+// Creates score variable to track the users score, and an array to record which anwer choices they made
 var score = 0
 let choicesArray = []
-
+// Event listeners for both game buttons
 startButton.addEventListener('click', startGame)
 nextButton.addEventListener('click', () => {
+// Every time the next button is clicked, one is added to the question index, and this is used to bring up the next question
   currentQuestionIndex++
   setNextQuestion()
 })
 
 function startGame() {
-  console.log('Started')
-  startButton.classList.add('hide')
-  shuffledQuestions = questions.sort(() => Math.random() - .5)
+  console.log('Started') // To confirm it's working
+  startButton.classList.add('hide') // Take away the start button
+  shuffledQuestions = questions.sort(() => Math.random() - .5) // creates a shuffled list
   currentQuestionIndex = 0
-  questionContainerElement.classList.remove("hide")
+  questionContainerElement.classList.remove("hide") // shows the question
   setNextQuestion()
-  resultsContainer.classList.add('hide')
+  resultsContainer.classList.add('hide') // hides the results container (if show, ie when restarting)
 }
-
+// defines the function to set the next question including resetting the attributes that revealed the answer of the previous question
 function setNextQuestion() {
   resetState()
   showQuestion(shuffledQuestions[currentQuestionIndex])
 }
 
 function showQuestion(question) {
+  // fills question and context element with relevant text from the array
   questionElement.innerText = question.question
   contextElement.innerText = question.context
   question.answers.forEach(answer => {
-    const button = document.createElement('button')
-    button.innerText = answer.text
+    const button = document.createElement('button') // creates a button for each answer
+    button.innerText = answer.text //fills in the text of each button
     button.classList.add('button')
-    button.setAttribute("data-choice", answer.choice)
+    button.setAttribute("data-choice", answer.choice) // gives each button a data attribute corresponding to a unique number for each answer in the quiz
     if (answer.correct) {
-      button.dataset.correct = answer.correct
+      button.dataset.correct = answer.correct // the value "correct" is taken from the questions array and is made a data variable
     }
-    button.addEventListener('click', selectAnswer)
-    answerButtonsElement.appendChild(button)
+    button.addEventListener('click', selectAnswer) // each button will start the selectAnswer function if clicked
+    answerButtonsElement.appendChild(button) // gives each button element a "button" id
   })
 }
 
@@ -60,35 +64,35 @@ function resetState() {
 }
 
 function selectAnswer(e) {
-  contextContainer.classList.remove('hide')
-  const selectedButton = e.target
-  const correct = selectedButton.dataset.correct
-  const choice = selectedButton.getAttribute("data-choice")
-  if (correct) {
+  contextContainer.classList.remove('hide') // reveals the context element
+  const selectedButton = e.target // defines the button that has been clicked as a variable
+  const correct = selectedButton.dataset.correct // assigns the 'correct' value from the element
+  const choice = selectedButton.getAttribute("data-choice") // assigns the number from the choice element of the array to a variable
+  if (correct) {  // if correct is true
     rightWrong.innerText = "Correct!"
-    score++
-    console.log(score)
+    score++ // adds 1 to the score
+    console.log(score) // prints the score as a check
   } else {
     rightWrong.innerText = "Wrong"
 
   }
-  choicesArray.push(choice)
-  console.log(choicesArray)
+  choicesArray.push(choice) // adds the unique number from the chosen answer to the array, logging which answers were chosen throughout the quiz
+  console.log(choicesArray) // to check
   setStatusClass(document.body, correct)
   Array.from(answerButtonsElement.children).forEach(button => {
     setStatusClass(button, button.dataset.correct)
   })
-  if (shuffledQuestions.length > currentQuestionIndex + 1) {
+  if (shuffledQuestions.length > currentQuestionIndex + 1) { // if all the questions haven't been asked
   nextButton.classList.remove('hide')
-  } else {
-    startButton.innerText = "Restart"
-    startButton.classList.remove('hide')
-    results.innerText = "You got " + score + " answers right, out of " + questions.length
-    resultsContainer.classList.remove('hide')
-    choicesArray.push(score)
-    console.log(choicesArray)
-    score = 0
-    choicesArray = []
+} else { // if we're at the end of the question index
+    startButton.innerText = "Restart" // changes text of start button to restart, as it serves the same function
+    startButton.classList.remove('hide') // reveals the button
+    results.innerText = "You got " + score + " answers right, out of " + questions.length // prints score info
+    resultsContainer.classList.remove('hide') // reveals the score info
+    choicesArray.push(score) // adds total score to the end of the choices array
+    console.log(choicesArray) // prints on the console as a check
+    score = 0 //resets the score variable for a new game
+    choicesArray = [] // resets choices array for the new game
   }
 
 
@@ -97,17 +101,17 @@ function selectAnswer(e) {
 function setStatusClass(element, correct) {
   clearStatusClass(element)
   if (correct) {
-    element.classList.add('correct')
+    element.classList.add('correct') // if correct:true in the array, adds the 'correct' class to the element (button)
   } else {
-    element.classList.add('wrong')
+    element.classList.add('wrong')  // if correct:false in the array, adds the 'wrong' class to the element (button)
   }
 }
 
-function clearStatusClass(element) {
+function clearStatusClass(element) { //removes correct/wrong attributes from elements so as to reset the quiz questions
   element.classList.remove('correct')
   element.classList.remove('wrong')
 }
-
+// questions array!
 const questions = [
   {
     question: "What is the maximum time limit for police to detain you without arrest?",

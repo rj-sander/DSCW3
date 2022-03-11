@@ -9,6 +9,7 @@ const results = document.getElementById('results')
 const resultsContainer = document.getElementById('resultsContainer')
 const answerButtonsElement = document.getElementById('answerButtons')
 const rightWrong = document.getElementById("rightWrong")
+const intro = document.getElementById('intro-container')
 // Creates the variables needed to created a shuffled question deck
 let shuffledQuestions, currentQuestionIndex
 // Creates score variable to track the users score, and an array to record which anwer choices they made
@@ -25,6 +26,7 @@ nextButton.addEventListener('click', () => {
 function startGame() {
   console.log('Started') // To confirm it's working
   startButton.classList.add('hide') // Take away the start button
+  intro.classList.add('hide')
   shuffledQuestions = questions.sort(() => Math.random() - .5) // creates a shuffled list
   currentQuestionIndex = 0
   questionContainerElement.classList.remove("hide") // shows the question
